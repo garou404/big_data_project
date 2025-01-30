@@ -1,0 +1,9 @@
+.venv/
+.vscode/
+data/
+running-project/.bloop/
+running-project/.bsp/
+running-project/.metals/
+running-project/.vscode/
+running-project/project/
+running-project/target/
