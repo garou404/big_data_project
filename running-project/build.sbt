@@ -7,6 +7,10 @@ scalaVersion := "2.13.12"
 
 // ============================================================================
 
+// Option to run a different Object than main
+// Compile / packageBin / mainClass := Some("DifferentWordCount")
+
+
 // Lines like the above defining `scalaVersion` are called "settings". Settings
 // are key/value pairs. In the case of `scalaVersion`, the key is "scalaVersion"
 // and the value is "2.13.12"
@@ -21,6 +25,12 @@ version := "1.0"
 // mostly only necessary if you intend to publish your library's binaries on a
 // place like Sonatype.
 
+Compile / run / fork := true
+Compile / run / javaOptions ++= Seq(
+  "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+//   "--add-opens=java.base/java.nio=ALL-UNNAMED",
+  "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
+)
 
 // Want to use a published library in your project?
 // You can define other libraries as dependencies in your build like this:
@@ -28,9 +38,8 @@ version := "1.0"
 libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0"
 
 libraryDependencies ++= Seq(
-  "org.apache.hadoop" % "hadoop-common" % "3.4.1",
-  "org.apache.hadoop" % "hadoop-hdfs" % "3.4.1",
-  "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "3.4.1"
+	"org.apache.spark" %% "spark-core" % "3.5.0",
+	"org.apache.spark" %% "spark-sql" % "3.5.0"
 )
 
 // Here, `libraryDependencies` is a set of dependencies, and by using `+=`,

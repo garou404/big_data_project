@@ -1,6 +1,7 @@
 .venv/
 .vscode/
 data/
+.metals/
 running-project/.bloop/
 running-project/.bsp/
 running-project/.metals/
