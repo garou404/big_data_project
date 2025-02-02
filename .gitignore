@@ -8,3 +8,5 @@ running-project/.metals/
 running-project/.vscode/
 running-project/project/
 running-project/target/
+dashboard/.venv/
+dashboard/app/__pycache__/
