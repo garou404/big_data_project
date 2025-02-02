@@ -1,6 +1,8 @@
 import org.apache.spark.sql.{DataFrame}
-import org.apache.spark.sql.functions.{desc, expr, round, col, sum, floor, lit}
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.functions.expr
+import org.apache.spark.sql.expressions.Window
+
 
 object DataProcessor {
     def get_runner_proportion_per_country(df_runner : DataFrame, df_pop : DataFrame) : DataFrame = {
@@ -58,6 +60,41 @@ object DataProcessor {
         df_selected
     }
 
+    def get_per_runner_metrics(df_runner : DataFrame) : DataFrame = {
+        val nb_of_weeks = df_runner.select("datetime").distinct().count() / 7.0
+        df_runner
+        .filter(col("distance") =!= 0)
+        .groupBy("athlete")
+        .agg(
+            count("*").as("nb_of_run"),
+            round(sum("distance"), 2).as("total_dist"),
+            round(sum("distance") / lit(nb_of_weeks), 2).as("avg_dist_per_week"),
+            round(avg("distance"), 2).as("avg_run_dist")
+        )
+    }
 
+    def get_longest_running_streak_per_athlete(df_runner : DataFrame) : DataFrame = {
+        val windowSpec = Window.partitionBy("athlete").orderBy("datetime")
 
+        // Identify gaps: If previous day's distance > 0, continue the streak, else reset
+        val df_streak = df_runner
+            .withColumn("prev_distance", lag("distance", 1).over(windowSpec)) // Get previous day’s distance
+            .withColumn("streak_reset", when(col("prev_distance").isNull || col("prev_distance") === 0, 1).otherwise(0)) // Mark start of streaks
+            .withColumn("streak_id", sum("streak_reset").over(windowSpec)) // Create streak groups
+            .withColumn("running_streak", count("*").over(Window.partitionBy("athlete", "streak_id"))) // Count streak length
+            .drop("prev_distance", "streak_reset", "streak_id") // Clean up columns
+
+        df_streak.show(100)
+
+        // Get max streak per athlete
+        val df_max_streak = df_streak
+            .groupBy("athlete")
+            .agg(max("running_streak").alias("longest_streak"))
+
+        df_max_streak.orderBy(desc("longest_streak"))
+    }
+
+    // def get_best_performances_per_athlete(df_runner : DataFrame) : DataFrame = {
+        
+    // }
 }
