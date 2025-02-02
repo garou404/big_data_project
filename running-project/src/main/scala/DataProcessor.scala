@@ -29,6 +29,10 @@ object DataProcessor {
         .groupBy("age_group", "athlete").count()
         .groupBy("age_group").count()
         .withColumn("fraction", round(col("count") /  sum("count").over(), 2))
+        // df_runner
+        // .groupBy("age_group", "athlete").count()
+        // .groupBy("age_group").count()
+        // .withColumn("fraction", round(col("count") /  sum("count").over(), 2))
     }
 
     def get_fastest_runners_for_distance(df_runner : DataFrame, distance_threshold : Double, pace_threshold : Double, gender : String) : DataFrame = {
@@ -129,7 +133,6 @@ object DataProcessor {
         .filter(col("distance") =!= 0)
         .groupBy("country")
         .agg(
-
             count("*").as("nb_of_run"),
             round(sum("distance") / lit(nb_of_weeks), 2).as("avg_dist_per_week"),
             round(avg("distance"), 2).as("avg_run_dist")
