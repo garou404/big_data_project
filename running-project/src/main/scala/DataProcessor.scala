@@ -1,5 +1,5 @@
 import org.apache.spark.sql.{DataFrame}
-import org.apache.spark.sql.functions.{desc, expr, round, col, sum, floor}
+import org.apache.spark.sql.functions.{desc, expr, round, col, sum, floor, lit}
 import org.apache.spark.sql.functions.expr
 
 object DataProcessor {
@@ -29,15 +29,35 @@ object DataProcessor {
         .withColumn("fraction", round(col("count") /  sum("count").over(), 2))
     }
 
-    def get_all_time_performances(df_runner : DataFrame) : DataFrame = {
-        // "0.5", "1", "5", "10", "21.0975", "42,195"
-        df_runner
-        .filter(col("distance") =!= 0)
-        .withColumn("pace", round(expr("duration / distance"), 2))
-        .withColumn("pace_min", floor(col("pace")))
-        .withColumn("pace_sec", round(expr("pace - pace_min"), 2))
-        .filter(col("distance") >= 21.0975)
+    def get_fastest_runners_for_distance(df_runner : DataFrame, distance_threshold : Double, pace_threshold : Double, gender : String) : DataFrame = {
+        df_runner.filter(col("distance") >= distance_threshold && col("distance") < 1.2*distance_threshold  && col("pace") > pace_threshold && col("gender") === gender)
         .orderBy(col("pace").asc)
-        .limit(20)
+        .limit(3)
+        .withColumn("best distance", lit(distance_threshold))
     }
+
+    def get_all_time_performances(df_runner : DataFrame, df_wr : DataFrame) : DataFrame = {
+        val distances = Seq(0.1, 0.2, 0.4, 0.8, 1, 1.5, 2, 3, 5, 10, 21.0975, 42.195, 50, 100)
+        val genders = Seq("M", "F")
+        val temp_df = df_runner
+            .filter(col("distance") =!= 0)
+            .withColumn("pace", round(expr("duration / distance"), 2))
+            .withColumn("pace_min", floor(col("pace")))
+            .withColumn("pace_sec", round(expr("pace - pace_min")*60, 0))
+        val df_selected = distances
+        .flatMap(distance => genders.map(gender => {
+            val wr = df_wr.filter(col("gender") === gender)
+            .withColumn("pace", round(expr("duration / distance"), 2))
+            .filter(col("distance") === distance)
+            .select("pace")
+            .first()(0)
+
+            get_fastest_runners_for_distance(temp_df, distance, wr.asInstanceOf[Double], gender)
+        }))      
+        .reduce(_ union _)
+        df_selected
+    }
+
+
+
 }
