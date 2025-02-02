@@ -11,8 +11,10 @@ object Main {
         
         // df.show(10)
 
-        val df_test = DataProcessor.get_longest_running_streak_per_athlete(df)
+        val df_test = DataProcessor.get_running_frequency_per_country(df)
         df_test.show(40)
+        // println(df_test.count())
+        // System.out.flush()
 
         // val df_test2 = DataProcessor.get_runner_proportion_per_country(df, df_pop.where("year = 2019"))
         // df_test2.show()

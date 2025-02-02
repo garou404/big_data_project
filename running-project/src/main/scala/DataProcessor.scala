@@ -20,7 +20,7 @@ object DataProcessor {
     def get_runner_nb_per_country(df_runner : DataFrame) : DataFrame = {
         df_runner
         .groupBy("country", "athlete").count()
-        .groupBy("country").count()
+        .groupBy("country").count().withColumnRenamed("count", "runner_nb_per_country")
         .na.drop().sort(desc("count"))
     }
 
@@ -74,7 +74,9 @@ object DataProcessor {
     }
 
     def get_longest_running_streak_per_athlete(df_runner : DataFrame) : DataFrame = {
+        // This window specification groups rows by athlete and orders them by date
         val windowSpec = Window.partitionBy("athlete").orderBy("datetime")
+        
 
         // Identify gaps: If previous day's distance > 0, continue the streak, else reset
         val df_streak = df_runner
@@ -84,8 +86,6 @@ object DataProcessor {
             .withColumn("running_streak", count("*").over(Window.partitionBy("athlete", "streak_id"))) // Count streak length
             .drop("prev_distance", "streak_reset", "streak_id") // Clean up columns
 
-        df_streak.show(100)
-
         // Get max streak per athlete
         val df_max_streak = df_streak
             .groupBy("athlete")
@@ -94,7 +94,58 @@ object DataProcessor {
         df_max_streak.orderBy(desc("longest_streak"))
     }
 
-    // def get_best_performances_per_athlete(df_runner : DataFrame) : DataFrame = {
-        
-    // }
+    def get_best_performances_per_athlete(df_runner : DataFrame) : DataFrame = {
+        val windowSpec = Window.partitionBy("athlete").orderBy("datetime")
+        val temp_df = df_runner
+            .filter(col("distance") =!= 0)
+            .withColumn("pace", round(expr("duration / distance"), 2))
+            .withColumn("pace_min", floor(col("pace")))
+            .withColumn("pace_sec", round(expr("pace - pace_min")*60, 0))
+        val distances = Seq(5.0, 10.0, 21.0975, 42.195, 50.0, 100.0)   
+        distances
+        .map((dist : Double) => temp_df
+            .filter(col("distance") >= dist)
+            .withColumn("rank", rank().over(windowSpec))
+            .filter(col("rank") === 1)
+            .drop("rank")
+            .withColumn("best_for_dist", lit(dist))
+        ).reduce(_ union _)
+        .withColumn("dist/dur", concat(col("distance"), lit("/"), col("duration")))
+        .groupBy("athlete")
+        .pivot("best_for_dist")
+        .agg(first("dist/dur"))
+    }
+
+    def get_per_runner_data(df_runner : DataFrame) : DataFrame = {
+        val df_metrics = get_per_runner_metrics(df_runner)
+        val df_running_streak = get_longest_running_streak_per_athlete(df_runner)
+        val df_best_perf = get_best_performances_per_athlete(df_runner)
+        df_metrics.join(df_running_streak, "athlete", "outer").join(df_best_perf, "athlete", "outer")
+    }
+
+    def get_running_frequency_per_country(df_runner : DataFrame) : DataFrame = {
+        val nb_of_weeks = df_runner.select("datetime").distinct().count() / 7.0
+        df_runner
+        .filter(col("distance") =!= 0)
+        .groupBy("country")
+        .agg(
+
+            count("*").as("nb_of_run"),
+            round(sum("distance") / lit(nb_of_weeks), 2).as("avg_dist_per_week"),
+            round(avg("distance"), 2).as("avg_run_dist")
+        ).withColumn("avg_run_per_week", col("nb_of_run") / lit(nb_of_weeks))
+
+
+        df_runner
+        .filter(col("distance") =!= 0) // Filter out rows where distance is 0
+        .groupBy("country") // Group by country
+        .agg(
+            count("*").as("nb_of_run"),
+            round(sum("distance") / lit(nb_of_weeks), 2).as("avg_dist_per_week"),
+            round(avg("distance"), 2).as("avg_run_dist_per_run_per_athlete"),
+            countDistinct("athlete").as("distinct_athletes")
+        )
+        .withColumn("avg_nb_of_run_per_athlete_per_week", round(col("nb_of_run") / lit(nb_of_weeks) / col("distinct_athletes"), 0)) // Calculate average runs per week
+        .withColumn("avg_dist_per_athlete_per_week", round(col("avg_dist_per_week") / col("distinct_athletes"), 2))
+    }
 }
