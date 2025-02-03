@@ -1,1 +1,5 @@
 dash
+ipykernel
+pandas
+plotly
+nbformat
