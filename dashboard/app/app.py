@@ -87,6 +87,37 @@ dash_app.layout = html.Div([
                                 style={"height": 140}
                               )
                             ]),
+                            html.Div(className='col-md-6 py-1 px-2', children=[
+                              dag.AgGrid(
+                                id="country_representation_wr",
+                                # rowData=df.to_dict("records"),
+                                columnDefs=[
+                                  {"headerName": "Country", "field": "country"},
+                                  {
+                                      "headerName": "Flag",
+                                      "field": "flag_filename",
+                                      "cellRenderer": "svgRenderer",  # Custom cell renderer
+                                  },
+                                  {"headerName": "athlete nb", "field": "athlete"}
+                                ],
+                                className="ag-theme-alpine compact font",
+                                columnSize="responsiveSizeToFit",
+                                defaultColDef={"cellRenderer": "markdown", "sortable": True, "filter": True, "resizable": False, "filter": False},
+                                style={"height": 140},
+                                dangerously_allow_code=True
+                              )
+                            ]),
+                            html.Div(className='col-md-6 py-1 px-2', children=[
+                              dag.AgGrid(
+                                id="country_representation_best_perf",
+                                # rowData=df.to_dict("records"),
+                                columnDefs=[{"headerName": col, "field": col} for col in column_defs_all_time],
+                                defaultColDef={"sortable": True, "filter": True, "resizable": False, "filter": False},
+                                className="ag-theme-alpine compact font",
+                                columnSize="responsiveSizeToFit",
+                                style={"height": 140}
+                              )
+                            ]),
                           ])
                       ]
                   )
@@ -110,25 +141,25 @@ dash_app.layout = html.Div([
                                 html.Div(className="row m-0 px-3 pb-2", children=[
                                   dcc.Dropdown(id="athlete_id_dropdown", options=[1, 2, 3, 4, 5, 6, 7, 8 ,9 ,10], value=1)
                                 ]),
-                                html.Div(className="row m-0", children=[
-                                  html.Div(className='col-md-6 p-2 d-flex flex-column text-center', children=[
-                                    html.Label(['longest running streak']),
-                                    html.Label(id="athlete_streak")
+                                html.Div(className="row m-0 ", children=[
+                                  html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
+                                    html.Label(['longest running streak'], className='custom-font-size'),
+                                    html.Label(id="athlete_streak", className='custom-font-size')
                                   ]),
-                                  html.Div(className='col-md-6 p-2 d-flex flex-column text-center', children=[
-                                    html.Label(['avg run distance per week']),
-                                    html.Label(id="athlete_avg_run_dist")
+                                  html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
+                                    html.Label(['avg run distance per week'], className='custom-font-size'),
+                                    html.Label(id="athlete_avg_run_dist", className='custom-font-size')
                                   ]),
-                                  html.Div(className='col-md-6 p-2 d-flex flex-column text-center', children=[
-                                    html.Label(['avg run distance per week']),
-                                    html.Label(id="athlete_avg_run_per_week")
+                                  html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
+                                    html.Label(['avg run distance per week'], className='custom-font-size'),
+                                    html.Label(id="athlete_avg_run_per_week", className='custom-font-size')
                                   ]),
-                                  html.Div(className='col-md-6 p-2 d-flex flex-column text-center', children=[
-                                    html.Label(['avg run distance per week']),
-                                    html.Label(id="athlete_majors")
+                                  html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
+                                    html.Label(['avg run distance per week'], className='custom-font-size'),
+                                    html.Label(id="athlete_majors", className='custom-font-size')
                                   ]),
                                 ]),
-                                html.Div(className="row m-0 p-3", children=[
+                                html.Div(className="row m-0 px-3 py-1", children=[
                                   dcc.Dropdown(id="distance_athlete_dropdown", options=[5.0,10.0,21.0975,42.195,50.0,100.0], value=10.0)
                                 ]),
                                 html.Div(className="row m-0 p-0", children=[
@@ -158,7 +189,8 @@ dash_app.layout = html.Div([
               ]
           ),
       ]
-  )
+  ),
+  dcc.Location(id='url', refresh=False),
 ], className='fluid-container', style={'height': '100vh'})
 
 if __name__ == '__main__':

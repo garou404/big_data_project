@@ -3,6 +3,155 @@ import glob
 import plotly.express as px
 import numpy as np
 import datetime as dt
+import os
+
+
+country_to_svg = {
+    "United States": "is.svg",
+    "Germany": "ls.svg",
+    "United Kingdom": "gm.svg",
+    "Australia": "ph.svg",
+    "Spain": "to.svg",
+    "Canada": "sv.svg",
+    "Colombia": "pf.svg",
+    "Japan": "ro.svg",
+    "Malaysia": "ru.svg",
+    "Belarus": "gb-sct.svg",
+    "Switzerland": "tj.svg",
+    "Italy": "kr.svg",
+    "Norway": "td.svg",
+    "Netherlands": "so.svg",
+    "France": "tg.svg",
+    "Mexico": "pk.svg",
+    "Brazil": "jm.svg",
+    "Taiwan": "bz.svg",
+    "Peru": "ie.svg",
+    "Russia": "pl.svg",
+    "Luxembourg": "cu.svg",
+    "Sweden": "bm.svg",
+    "Singapore": "pm.svg",
+    "Slovenia": "gs.svg",
+    "Costa Rica": "pg.svg",
+    "Indonesia": "lc.svg",
+    "Denmark": "as.svg",
+    "Austria": "tk.svg",
+    "Poland": "ug.svg",
+    "Chile": "mz.svg",
+    "South Africa": "cefta.svg",
+    "Belgium": "pw.svg",
+    "China": "ch.svg",
+    "Isle of Man": "et.svg",
+    "Cayman Islands": "fk.svg",
+    "Iceland": "gf.svg",
+    "Portugal": "sz.svg",
+    "Romania": "cd.svg",
+    "Thailand": "nz.svg",
+    "Estonia": "sl.svg",
+    "Finland": "bf.svg",
+    "Moldova": "ec.svg",
+    "South Korea": "tn.svg",
+    "Argentina": "gt.svg",
+    "Czechia": "ki.svg",
+    "Ukraine": "us.svg",
+    "Slovakia": "rw.svg",
+    "Dominican Republic": "gb-eng.svg",
+    "Israel": "ao.svg",
+    "Guatemala": "qa.svg",
+    "Jersey": "ae.svg",
+    "Ireland": "kp.svg",
+    "Turkey": "rs.svg",
+    "United Arab Emirates": "sc.svg",
+    "Uruguay": "dz.svg",
+    "New Zealand": "vg.svg",
+    "Hungary": "gb-nir.svg",
+    "Philippines": "gn.svg",
+    "Myanmar": "sh-ta.svg",
+    "Greece": "nf.svg",
+    "India": "ax.svg",
+    "Croatia": "ma.svg",
+    "Panama": "gb-wls.svg",
+    "Cyprus": "hu.svg",
+    "Vietnam": "cx.svg",
+    "Guernsey": "mn.svg",
+    "Mongolia": "sn.svg",
+    "Lithuania": "dk.svg",
+    "Bolivia": "sh-hl.svg",
+    "Andorra": "ni.svg",
+    "El Salvador": "es-ga.svg",
+    "Latvia": "bl.svg",
+    "Nicaragua": "fj.svg",
+    "Jordan": "kg.svg",
+    "Ecuador": "yt.svg",
+    "Kazakhstan": "vn.svg",
+    "Kosovo": "es-ct.svg",
+    "Bulgaria": "ml.svg",
+    "Malta": "iq.svg",
+    "Kenya": "sh-ac.svg",
+    "Venezuela": "ve.svg",
+    "Serbia": "lk.svg",
+    "Zimbabwe": "cc.svg",
+    "Monaco": "ms.svg",
+    "Montenegro": "er.svg",
+    "Suriname": "gq.svg",
+    "Armenia": "la.svg",
+    "Bahrain": "fm.svg",
+    "Honduras": "by.svg",
+    "Tunisia": "gh.svg",
+    "Nigeria": "ke.svg",
+    "Barbados": "mm.svg",
+    "Ghana": "eac.svg",
+    "Azerbaijan": "aq.svg",
+    "Botswana": "bn.svg",
+    "Liechtenstein": "pc.svg",
+    "Faroe Islands": "aw.svg",
+    "Saudi Arabia": "fr.svg",
+    "Paraguay": "at.svg",
+    "Senegal": "wf.svg",
+    "Angola": "sr.svg",
+    "Mauritius": "ht.svg",
+    "Lebanon": "ci.svg",
+    "Bosnia and Herzegovina": "il.svg",
+    "Bermuda": "ic.svg",
+    "Gibraltar": "cr.svg",
+    "Uganda": "tm.svg",
+    "Afghanistan": "ss.svg",
+    "Anguilla": "bd.svg",
+    "Morocco": "xx.svg",
+    "Jamaica": "ai.svg",
+    "Belize": "tf.svg",
+    "Iran": "gr.svg",
+    "Bahamas": "hm.svg",
+    "Uzbekistan": "cw.svg",
+    "Namibia": "tz.svg",
+    "Trinidad and Tobago": "lu.svg",
+    "Ivory Coast": "tt.svg",
+    "San Marino": "bo.svg",
+    "Sudan": "fi.svg",
+    "South Sudan": "ye.svg",
+    "Maldives": "gl.svg",
+    "East Timor": "sm.svg",
+    "Kuwait": "un.svg",
+    "Fiji": "hr.svg",
+    "Laos": "se.svg",
+    "Brunei": "jo.svg",
+    "Egypt": "es-pv.svg",
+    "Cape Verde": "kh.svg",
+    "Jamaica": "jm.svg",
+    "South Africa": "za.svg",
+    "Kenya": "ke.svg",
+    "Morocco": "ma.svg",
+    "Norway": "no.svg",
+    "Uganda": "ug.svg",
+    "USA": "us.svg",
+    "Lithuania": "lt.svg",
+    "East Germany": "ddr.svg",  # East Germany no longer exists; usually, its flag is labeled "ddr.svg"
+    "Czechoslovakia": "cs.svg",  # Czechoslovakia split; its historical flag is often labeled "cs.svg"
+    "Russia": "ru.svg",
+    "Austrailia": "au.svg",  # Assuming "Austrailia" is a typo for "Australia"
+    "China": "cn.svg",
+    "Ethiopia": "et.svg",
+    "Japan": "jp.svg"
+}
 
 def format_duration(minutes):
     total_seconds = int(minutes * 60)
@@ -125,9 +274,9 @@ class DataHandler:
                 text_auto=True, color='distance', color_continuous_scale="hot"
             ) #darkmint hot tealgrn ylgnbu spectral blackbody
 
-            fig.update_layout(xaxis_title='Week', yaxis_title='Distance (km)',
+            fig.update_layout(xaxis_title='', yaxis_title='Distance (km)',
                 xaxis=dict(tickformat='%b'),
-                margin=dict(l=40, r=20, t=10, b=0),
+                margin=dict(l=25, r=20, t=10, b=0),
                 paper_bgcolor = 'rgba(0,0,0,0)',
                 # plot_bgcolor = 'rgba(0,0,0,0)'
             )
@@ -150,8 +299,6 @@ class DataHandler:
         all_files = glob.glob(path + "/*.csv")  # Get all CSV files
         df = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
         df.drop(columns='_c0', inplace=True)
-
-
         
         df_wr_filtered = self.df_wr.loc[(self.df_wr['distance'] == distance) & (self.df_wr['gender'] == gender)].copy()
         df_wr_filtered.rename(columns={"world_record": "pace_str", "athlete_age": "age_group"}, inplace=True)
@@ -166,14 +313,26 @@ class DataHandler:
         df_filtered['duration'] = df_filtered['duration'].apply(format_duration)
         df_perf = pd.concat([df_filtered, df_wr_filtered]).sort_values(by=['pace'])
         df_perf['age_group'] = df_perf['age_group'].astype(str)
-        print(df_perf)
         return df_perf
 
     def get_df_country_representation_wr(self):
-        print("test")
+        if not self.df_wr.empty:
+            df_wr_filtered = self.df_wr.groupby("country")['athlete'].count().reset_index().sort_values(by=["athlete"], ascending=False).copy()
+            print(os.listdir("./"))
+            df_wr_filtered['flag_filename'] = df_wr_filtered['country'].map(lambda x: f"/assets/flags/flags/4x3/{country_to_svg.get(x, 'xx')}")
+            print(df_wr_filtered)
+            return df_wr_filtered
+        return None
 
     def get_df_country_representation(self):
+        # path = f"../data/processed_data/all_time_performances_{year}/"
+        # all_files = glob.glob(path + "/*.csv")  # Get all CSV files
+        # df = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
+        # df.drop(columns='_c0', inplace=True)
+        # df.groupby("country")['athlete'].count().reset_index().sort_values(by=["athlete"], ascending=False)
+        # return df
         print("test")
+
 
     def get_athlete_per_country(self):
         print("test")

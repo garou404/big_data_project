@@ -5,3 +5,7 @@
 .ag-theme-alpine.compact.font {
     --ag-font-size: 10px;
 }
+
+.custom-font-size{
+    font-size: 0.8rem;
+}

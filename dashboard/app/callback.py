@@ -60,3 +60,19 @@ def display_grid_all_time_male(distance):
 def display_grid_all_time_female(distance):
     df_perf = data_handler.get_df_all_time(distance, "F")
     return df_perf[['athlete', 'duration', 'age_group', 'country', 'pace_str']].to_dict('records')
+
+@callback(
+    Output('country_representation_wr', 'rowData'),
+    Input('url', 'pathname')
+)
+def display_grid_country_representation_wr(pathname):
+    df = data_handler.get_df_country_representation_wr()
+    return df.to_dict('records')
+
+@callback(
+    Output('country_representation_best_perf', 'rowData'),
+    Input('url', 'pathname')
+)
+def display_grid_country_representation_best_perf(pathname):
+    data_handler.get_df_country_representation()
+    return no_update
