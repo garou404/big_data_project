@@ -21,7 +21,7 @@ dash_app.layout = html.Div([
       className='row w-100 m-0',
       children=[
           html.Div(
-              className='col-4 bg-primary-subtle h-100 p-2',
+              className='col-4 h-100 p-2',
               children=[
                   html.Div(
                       className="bg-light", 
@@ -32,25 +32,88 @@ dash_app.layout = html.Div([
                                   html.Label(["GLOBAL"], className="h2")
                               ]
                           ),
-                          html.Div(
-                              className="", 
-                              children=["other section 1"]
-                          ),
-                          html.Div(
-                              className="", 
-                              children=["other section 2"]
-                          ),
-                          html.Div(
-                              className="", 
-                              children=["other section 3"]
-                          ),
+                          html.Div(className='row m-0', children=[
+                            html.Label(className="p-3 pb-1", children=["Athletes repartion per country"])
+                          ]),
+                          html.Div(className='row m-0', children=[
+                            html.Div(style={'height': '30vh'}, className='col-md-7 p-0', children=[
+                              dcc.Graph(id='athletes_nb_per_country', className='h-100')
+                            ]),
+                            html.Div(className="col-md-5", children=[
+                              dag.AgGrid(
+                                id="athlete_nb_per_country",
+                                columnDefs=[{"headerName": "Country", "field": "country"},{"headerName": "athlete number", "field": "runner_nb_per_country"}],
+                                defaultColDef={"sortable": True, "filter": True, "resizable": False, "filter": False},
+                                className="ag-theme-alpine compact font",
+                                columnSize="responsiveSizeToFit",
+                                style={"height": 190}
+                              )
+                            ])
+                          ]),
+                          html.Div(className="col-md-12 px-5", children=[
+                            dag.AgGrid(
+                              id="athlete_prop_pop_country",
+                              columnDefs=[
+                                {"headerName": "Country", "field": "country"},
+                                {
+                                  "headerName": "Flag",
+                                  "field": "flag_filename",
+                                  "cellRenderer": "svgRenderer", 
+                                },
+                                {"headerName": "proportion of the population running", "field": "runner_proportion"}
+                              ],
+                              defaultColDef={"sortable": True, "filter": True, "resizable": False, "filter": False},
+                              className="ag-theme-alpine compact font",
+                              columnSize="responsiveSizeToFit",
+                              style={"height": 150}
+                            )
+                          ]),
+                          # html.Div(className="row m-0 p-3", children=[
+                          #   dcc.Dropdown(id="country-dropdown", options=["USA"], value="USA")
+                          # ]),
+                          # html.Div(className="row m-0 ", children=[
+                          #   html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
+                          #     html.Label(['Longest running streak'], className='custom-font-size'),
+                          #     html.Label(id="", className='custom-font-size')
+                          #   ]),
+                          #   html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
+                          #     html.Label(['Avg run distance per week'], className='custom-font-size'),
+                          #     html.Label(id="", className='custom-font-size')
+                          #   ]),
+                          #   html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
+                          #     html.Label(['Avg run distance per week'], className='custom-font-size'),
+                          #     html.Label(id="", className='custom-font-size')
+                          #   ]),
+                          #   html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
+                          #     html.Label(['Avg run distance per week'], className='custom-font-size'),
+                          #     html.Label(id="", className='custom-font-size')
+                          #   ]),
+                          # ]),
+                          html.Div(className='row m-0', children=[
+                            html.Label(className="p-3 pb-1", children=["Athletes repartion per age group"])
+                          ]),
+                          html.Div(className='row m-0', children=[
+                            html.Div(style={'height': '20vh'}, className='col-md-7 p-0', children=[
+                              dcc.Graph(id='athletes_prop_per_age_group', className='h-100')
+                            ]),
+                            html.Div(className="col-md-5", children=[
+                              dag.AgGrid(
+                                id="athlete_prop_per_age_group",
+                                columnDefs=[{"headerName": "Country", "field": "country"},{"headerName": "athlete number", "field": "runner_nb_per_country"}],
+                                defaultColDef={"sortable": True, "filter": True, "resizable": False, "filter": False},
+                                className="ag-theme-alpine compact font",
+                                columnSize="responsiveSizeToFit",
+                                style={"height": 190}
+                              )
+                            ])
+                          ]),
                       ]
                   )
               
               ]
           ),
           html.Div(
-              className='col-4 bg-success-subtle h-100 p-2',
+              className='col-4 h-100 p-2',
               children=[
                 html.Div(
                       className="bg-light", 
@@ -65,7 +128,10 @@ dash_app.layout = html.Div([
                             dcc.Dropdown(id="distance_all_time_dropdown", options=[1.0,1.5,2.0,3.0,5.0,10.0,21.0975,42.195,50.0,100.0], value=10.0)
                           ]),
                           html.Div(className='row m-0', children=[
-                            html.Div(className='col-md-12 py-1 px-2', children=[
+                              html.Label(className="p-3 pb-1", children=["20 best performances of male athletes"])
+                            ]),
+                          html.Div(className='row m-0', children=[
+                            html.Div(className='col-md-12 py-2 px-2', children=[
                               dag.AgGrid(
                                 id="all_time_perf_male_grid",
                                 # rowData=df.to_dict("records"),
@@ -76,7 +142,10 @@ dash_app.layout = html.Div([
                                 style={"height": 140}
                               )
                             ]),
-                            html.Div(className='col-md-12 py-1 px-2', children=[
+                            html.Div(className='row m-0', children=[
+                              html.Label(className="p-3 pb-1", children=["20 best performances of female athletes"])
+                            ]),
+                            html.Div(className='col-md-12 py-2 px-2', children=[
                               dag.AgGrid(
                                 id="all_time_perf_female_grid",
                                 # rowData=df.to_dict("records"),
@@ -87,7 +156,15 @@ dash_app.layout = html.Div([
                                 style={"height": 140}
                               )
                             ]),
-                            html.Div(className='col-md-6 py-1 px-2', children=[
+                            html.Div(className='row m-0', children=[
+                              html.Div(className='col-md-6 text-center', children=[
+                                html.Label(className="p-3", children=["Country representation among world records"])
+                              ]),
+                              html.Div(className='col-md-6 text-center', children=[
+                                html.Label(className="p-3", children=["Country representation among best performances"])
+                              ]),
+                            ]),
+                            html.Div(className='col-md-6 py-2 px-3', children=[
                               dag.AgGrid(
                                 id="country_representation_wr",
                                 # rowData=df.to_dict("records"),
@@ -96,7 +173,7 @@ dash_app.layout = html.Div([
                                   {
                                       "headerName": "Flag",
                                       "field": "flag_filename",
-                                      "cellRenderer": "svgRenderer",  # Custom cell renderer
+                                      "cellRenderer": "svgRenderer", 
                                   },
                                   {"headerName": "athlete nb", "field": "athlete"}
                                 ],
@@ -107,11 +184,18 @@ dash_app.layout = html.Div([
                                 dangerously_allow_code=True
                               )
                             ]),
-                            html.Div(className='col-md-6 py-1 px-2', children=[
+                            html.Div(className='col-md-6 py-2 px-3', children=[
                               dag.AgGrid(
                                 id="country_representation_best_perf",
-                                # rowData=df.to_dict("records"),
-                                columnDefs=[{"headerName": col, "field": col} for col in column_defs_all_time],
+                                columnDefs=[
+                                  {"headerName": "Country", "field": "country"},
+                                  {
+                                      "headerName": "Flag",
+                                      "field": "flag_filename",
+                                      "cellRenderer": "svgRenderer", 
+                                  },
+                                  {"headerName": "athlete nb", "field": "athlete"}
+                                ],
                                 defaultColDef={"sortable": True, "filter": True, "resizable": False, "filter": False},
                                 className="ag-theme-alpine compact font",
                                 columnSize="responsiveSizeToFit",
@@ -124,7 +208,7 @@ dash_app.layout = html.Div([
               ]
           ),
           html.Div(
-              className='col-4 bg-warning-subtle h-100 p-2',
+              className='col-4 h-100 p-2',
               children=[
                 html.Div(
                       className="bg-light", 
@@ -143,19 +227,19 @@ dash_app.layout = html.Div([
                                 ]),
                                 html.Div(className="row m-0 ", children=[
                                   html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
-                                    html.Label(['longest running streak'], className='custom-font-size'),
+                                    html.Label(['Longest running streak'], className='custom-font-size'),
                                     html.Label(id="athlete_streak", className='custom-font-size')
                                   ]),
                                   html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
-                                    html.Label(['avg run distance per week'], className='custom-font-size'),
+                                    html.Label(['Avg run distance per week'], className='custom-font-size'),
                                     html.Label(id="athlete_avg_run_dist", className='custom-font-size')
                                   ]),
                                   html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
-                                    html.Label(['avg run distance per week'], className='custom-font-size'),
+                                    html.Label(['Avg run distance per week'], className='custom-font-size'),
                                     html.Label(id="athlete_avg_run_per_week", className='custom-font-size')
                                   ]),
                                   html.Div(className='col-md-6 p-1 d-flex flex-column text-center', children=[
-                                    html.Label(['avg run distance per week'], className='custom-font-size'),
+                                    html.Label(['Avg run distance per week'], className='custom-font-size'),
                                     html.Label(id="athlete_majors", className='custom-font-size')
                                   ]),
                                 ]),

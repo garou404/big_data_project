@@ -74,5 +74,48 @@ def display_grid_country_representation_wr(pathname):
     Input('url', 'pathname')
 )
 def display_grid_country_representation_best_perf(pathname):
-    data_handler.get_df_country_representation()
-    return no_update
+    df = data_handler.get_df_country_representation()
+    return df.to_dict("records")
+
+
+@callback(
+    Output('athlete_nb_per_country', 'rowData'),
+    Input('url', 'pathname')
+)
+def display_grid_country_representation_best_perf(pathname):
+    df = data_handler.get_athlete_per_country()
+    return df.to_dict("records")
+
+
+@callback(
+    Output('athletes_nb_per_country', 'figure'),
+    Input('url', 'pathname')
+)
+def display_graph_country_representation(pathname):
+    figure = data_handler.get_fig_runner_per_country()
+    return figure
+
+@callback(
+    Output('athlete_prop_pop_country', 'rowData'),
+    Input('url', 'pathname')
+)
+def display_grid_athlete_prop_pop_country(pathname):
+    df = data_handler.get_df_proportion_athlete_pop()
+    return df.to_dict("records")
+
+@callback(
+    Output('athlete_prop_per_age_group', 'rowData'),
+    Input('url', 'pathname')
+)
+def display_grid_athlete_prop_per_age_group(pathname):
+    df = data_handler.get_athlete_per_country()
+    return df.to_dict("records")
+
+
+@callback(
+    Output('athletes_prop_per_age_group', 'figure'),
+    Input('url', 'pathname')
+)
+def display_graph_athlete_prop_per_age_group(pathname):
+    figure = data_handler.get_fig_proportion_age_group()
+    return figure

@@ -3,8 +3,6 @@ var dagcomponentfuncs = window.dashAgGridComponentFunctions = window.dashAgGridC
 
 dagcomponentfuncs.svgRenderer = function (props) {
     console.log(props)
-    // if (!params.value) return "";
-    // return `<img src="${params.value}" width="50" height="50" style="border: 1px solid #ddd;" />`;
     return React.createElement(
         'div',
         {

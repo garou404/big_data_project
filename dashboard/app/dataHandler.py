@@ -7,135 +7,43 @@ import os
 
 
 country_to_svg = {
-    "United States": "is.svg",
-    "Germany": "ls.svg",
-    "United Kingdom": "gm.svg",
-    "Australia": "ph.svg",
-    "Spain": "to.svg",
-    "Canada": "sv.svg",
-    "Colombia": "pf.svg",
-    "Japan": "ro.svg",
-    "Malaysia": "ru.svg",
-    "Belarus": "gb-sct.svg",
-    "Switzerland": "tj.svg",
-    "Italy": "kr.svg",
-    "Norway": "td.svg",
-    "Netherlands": "so.svg",
-    "France": "tg.svg",
-    "Mexico": "pk.svg",
-    "Brazil": "jm.svg",
-    "Taiwan": "bz.svg",
-    "Peru": "ie.svg",
-    "Russia": "pl.svg",
-    "Luxembourg": "cu.svg",
-    "Sweden": "bm.svg",
-    "Singapore": "pm.svg",
-    "Slovenia": "gs.svg",
-    "Costa Rica": "pg.svg",
-    "Indonesia": "lc.svg",
-    "Denmark": "as.svg",
-    "Austria": "tk.svg",
-    "Poland": "ug.svg",
-    "Chile": "mz.svg",
-    "South Africa": "cefta.svg",
-    "Belgium": "pw.svg",
-    "China": "ch.svg",
-    "Isle of Man": "et.svg",
-    "Cayman Islands": "fk.svg",
-    "Iceland": "gf.svg",
-    "Portugal": "sz.svg",
-    "Romania": "cd.svg",
-    "Thailand": "nz.svg",
-    "Estonia": "sl.svg",
-    "Finland": "bf.svg",
-    "Moldova": "ec.svg",
-    "South Korea": "tn.svg",
-    "Argentina": "gt.svg",
-    "Czechia": "ki.svg",
-    "Ukraine": "us.svg",
-    "Slovakia": "rw.svg",
-    "Dominican Republic": "gb-eng.svg",
-    "Israel": "ao.svg",
-    "Guatemala": "qa.svg",
-    "Jersey": "ae.svg",
-    "Ireland": "kp.svg",
-    "Turkey": "rs.svg",
-    "United Arab Emirates": "sc.svg",
-    "Uruguay": "dz.svg",
-    "New Zealand": "vg.svg",
-    "Hungary": "gb-nir.svg",
-    "Philippines": "gn.svg",
-    "Myanmar": "sh-ta.svg",
-    "Greece": "nf.svg",
-    "India": "ax.svg",
-    "Croatia": "ma.svg",
-    "Panama": "gb-wls.svg",
-    "Cyprus": "hu.svg",
-    "Vietnam": "cx.svg",
-    "Guernsey": "mn.svg",
-    "Mongolia": "sn.svg",
-    "Lithuania": "dk.svg",
-    "Bolivia": "sh-hl.svg",
-    "Andorra": "ni.svg",
-    "El Salvador": "es-ga.svg",
-    "Latvia": "bl.svg",
-    "Nicaragua": "fj.svg",
-    "Jordan": "kg.svg",
-    "Ecuador": "yt.svg",
-    "Kazakhstan": "vn.svg",
-    "Kosovo": "es-ct.svg",
-    "Bulgaria": "ml.svg",
-    "Malta": "iq.svg",
-    "Kenya": "sh-ac.svg",
-    "Venezuela": "ve.svg",
-    "Serbia": "lk.svg",
-    "Zimbabwe": "cc.svg",
-    "Monaco": "ms.svg",
-    "Montenegro": "er.svg",
-    "Suriname": "gq.svg",
-    "Armenia": "la.svg",
-    "Bahrain": "fm.svg",
-    "Honduras": "by.svg",
-    "Tunisia": "gh.svg",
-    "Nigeria": "ke.svg",
-    "Barbados": "mm.svg",
-    "Ghana": "eac.svg",
-    "Azerbaijan": "aq.svg",
-    "Botswana": "bn.svg",
-    "Liechtenstein": "pc.svg",
-    "Faroe Islands": "aw.svg",
-    "Saudi Arabia": "fr.svg",
-    "Paraguay": "at.svg",
-    "Senegal": "wf.svg",
-    "Angola": "sr.svg",
-    "Mauritius": "ht.svg",
-    "Lebanon": "ci.svg",
-    "Bosnia and Herzegovina": "il.svg",
-    "Bermuda": "ic.svg",
-    "Gibraltar": "cr.svg",
-    "Uganda": "tm.svg",
-    "Afghanistan": "ss.svg",
-    "Anguilla": "bd.svg",
-    "Morocco": "xx.svg",
-    "Jamaica": "ai.svg",
-    "Belize": "tf.svg",
-    "Iran": "gr.svg",
-    "Bahamas": "hm.svg",
-    "Uzbekistan": "cw.svg",
-    "Namibia": "tz.svg",
-    "Trinidad and Tobago": "lu.svg",
-    "Ivory Coast": "tt.svg",
-    "San Marino": "bo.svg",
-    "Sudan": "fi.svg",
-    "South Sudan": "ye.svg",
-    "Maldives": "gl.svg",
-    "East Timor": "sm.svg",
-    "Kuwait": "un.svg",
-    "Fiji": "hr.svg",
-    "Laos": "se.svg",
-    "Brunei": "jo.svg",
-    "Egypt": "es-pv.svg",
-    "Cape Verde": "kh.svg",
+        "United States": "us.svg",
+    "United Kingdom": "gb.svg",
+    "Germany": "de.svg",
+    "Japan": "jp.svg",
+    "Brazil": "br.svg",
+    "Canada": "ca.svg",
+    "Mexico": "mx.svg",
+    "Netherlands": "nl.svg",
+    "Australia": "au.svg",
+    "Italy": "it.svg",
+    "Indonesia": "id.svg",
+    "Norway": "no.svg",
+    "Russia": "ru.svg",
+    "China": "cn.svg",
+    "Taiwan": "tw.svg",
+    "Philippines": "ph.svg",
+    "Argentina": "ar.svg",
+    "Spain": "es.svg",
+    "South Africa": "za.svg",
+    "Poland": "pl.svg",
+    "Costa Rica": "cr.svg",
+    "Switzerland": "ch.svg",
+    "Finland": "fi.svg",
+    "Chile": "cl.svg",
+    "South Korea": "kr.svg",
+    "Sweden": "se.svg",
+    "Ireland": "ie.svg",
+    "France": "fr.svg",
+    "Austria": "at.svg",
+    "Botswana": "bw.svg",
+    "Kenya": "ke.svg",
+    "Denmark": "dk.svg",
+    "Faroe Islands": "fo.svg",
+    "Colombia": "co.svg",
+    "Iceland": "is.svg",
+    "Panama": "pa.svg",
+    "Latvia": "lv.svg",
     "Jamaica": "jm.svg",
     "South Africa": "za.svg",
     "Kenya": "ke.svg",
@@ -212,7 +120,15 @@ class DataHandler:
         self.df_per_athlete = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
         self.df_running= pd.read_csv(data_path+f"../running/run_ww_{self.year}_d.csv", index_col="Unnamed: 0")
         self.df_wr = pd.read_csv("../data/wr/running_wr.csv")
+        
+        all_files = glob.glob(f"{data_path}runner_nb_per_country_{self.year}" + "/*.csv")
+        self.df_athletes_per_country = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
+        
+        all_files = glob.glob(f"{data_path}runner_prop_per_country_{self.year}" + "/*.csv")
+        self.df_proportion_athlete_per_pop = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True).dropna()
 
+        all_files = glob.glob(f"{data_path}runner_prop_per_age_category_{self.year}" + "/*.csv")
+        self.df_proportion_per_age_category = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True).dropna()
 
     def get_fig_pace_distribution(self, athlete_id, distance):
         distance = float(distance)
@@ -284,14 +200,40 @@ class DataHandler:
         except:
             return px.bar(title="No Data Available")
     
-    def get_fig_proportion_age_group(self):
-        print("test")
+    # def get_fig_proportion_athlete_pop(self):
+    #     if not self.df_proportion_athlete_per_pop.empty:
+    #         return self.df_proportion_athlete_per_pop
 
     def get_fig_proportion_age_group(self):
-        print("test")
+        if not self.df_proportion_per_age_category.empty:
+            fig = px.pie(self.df_proportion_per_age_category, 
+             values='count', 
+             names='age_group', 
+             title='',
+			 )
+            fig.update_layout(
+                margin=dict(l=0, r=20, t=10, b=0),
+                paper_bgcolor = 'rgba(0,0,0,0)',
+            )
+            return fig
+        else:
+            return px.pie(title="No Data Available")
+
     
     def get_fig_runner_per_country(self):
-        print("test")
+        if not self.df_athletes_per_country.empty:
+            fig = px.pie(self.df_athletes_per_country.head(15), 
+             values='runner_nb_per_country', 
+             names='country', 
+             title='',
+			 )
+            fig.update_layout(
+                margin=dict(l=0, r=20, t=10, b=0),
+                paper_bgcolor = 'rgba(0,0,0,0)',
+            )
+            return fig
+        else:
+            return px.pie(title="No Data Available")
 
     def get_df_all_time(self, distance, gender):
 
@@ -318,28 +260,35 @@ class DataHandler:
     def get_df_country_representation_wr(self):
         if not self.df_wr.empty:
             df_wr_filtered = self.df_wr.groupby("country")['athlete'].count().reset_index().sort_values(by=["athlete"], ascending=False).copy()
-            print(os.listdir("./"))
             df_wr_filtered['flag_filename'] = df_wr_filtered['country'].map(lambda x: f"/assets/flags/flags/4x3/{country_to_svg.get(x, 'xx')}")
-            print(df_wr_filtered)
             return df_wr_filtered
         return None
 
     def get_df_country_representation(self):
-        # path = f"../data/processed_data/all_time_performances_{year}/"
-        # all_files = glob.glob(path + "/*.csv")  # Get all CSV files
-        # df = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
-        # df.drop(columns='_c0', inplace=True)
-        # df.groupby("country")['athlete'].count().reset_index().sort_values(by=["athlete"], ascending=False)
-        # return df
-        print("test")
+        path = f"{self.data_path}/all_time_performances_{self.year}/"
+        all_files = glob.glob(path + "/*.csv")
+        df = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
+        df.drop(columns='_c0', inplace=True)
+        df = df.groupby("country")['athlete'].count().reset_index().sort_values(by=["athlete"], ascending=False)
+        df['flag_filename'] = df['country'].map(lambda x: f"/assets/flags/flags/4x3/{country_to_svg.get(x, 'xx')}")
+        return df
 
 
     def get_athlete_per_country(self):
-        print("test")
-
+        if not self.df_athletes_per_country.empty:
+            return self.df_athletes_per_country
+        else:
+            return pd.DataFrame()
+    
     def get_df_proportion_athlete_pop(self):
-        print("test")
-
+        if not self.df_proportion_athlete_per_pop.empty:
+            df = self.df_proportion_athlete_per_pop.copy()
+            df['flag_filename'] = df['country'].map(lambda x: f"/assets/flags/flags/4x3/{country_to_svg.get(x, 'xx')}")
+            print(df)
+            return df
+        else:
+            return pd.DataFrame()
+        
     def get_data_per_athlete(self, athlete_id):
         df_athlete = self.df_per_athlete[self.df_per_athlete['athlete'] == athlete_id]
         return df_athlete
