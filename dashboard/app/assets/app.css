@@ -1,0 +1,7 @@
+.ag-theme-alpine.compact {
+    --ag-grid-size: 3px;
+}
+
+.ag-theme-alpine.compact.font {
+    --ag-font-size: 10px;
+}

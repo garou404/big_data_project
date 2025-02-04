@@ -3,3 +3,4 @@ ipykernel
 pandas
 plotly
 nbformat
+dash-ag-grid

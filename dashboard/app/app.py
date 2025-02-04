@@ -1,6 +1,6 @@
 from dash import Dash, html, dcc
 import app.callback
-
+import dash_ag_grid as dag
 
 
 
@@ -10,6 +10,8 @@ dash_app.config["suppress_callback_exceptions"] = True
 
 months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11','12']
 month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+column_defs_all_time = ['athlete', 'duration', 'age_group', 'country', 'pace_str']
 
 dash_app.layout = html.Div([
   html.Div([ # HEADER
@@ -59,18 +61,33 @@ dash_app.layout = html.Div([
                                   html.Label(["ALL TIME PERFORMANCES"], className="h2")
                               ]
                           ),
-                          html.Div(
-                              className="", 
-                              children=["other section 1"]
-                          ),
-                          html.Div(
-                              className="", 
-                              children=["other section 2"]
-                          ),
-                          html.Div(
-                              className="", 
-                              children=["other section 3"]
-                          ),
+                          html.Div(className="row m-0 p-3", children=[
+                            dcc.Dropdown(id="distance_all_time_dropdown", options=[1.0,1.5,2.0,3.0,5.0,10.0,21.0975,42.195,50.0,100.0], value=10.0)
+                          ]),
+                          html.Div(className='row m-0', children=[
+                            html.Div(className='col-md-12 py-1 px-2', children=[
+                              dag.AgGrid(
+                                id="all_time_perf_male_grid",
+                                # rowData=df.to_dict("records"),
+                                columnDefs=[{"headerName": col, "field": col} for col in column_defs_all_time],
+                                defaultColDef={"sortable": True, "filter": True, "resizable": False, "filter": False},
+                                className="ag-theme-alpine compact font",
+                                columnSize="responsiveSizeToFit",
+                                style={"height": 140}
+                              )
+                            ]),
+                            html.Div(className='col-md-12 py-1 px-2', children=[
+                              dag.AgGrid(
+                                id="all_time_perf_female_grid",
+                                # rowData=df.to_dict("records"),
+                                columnDefs=[{"headerName": col, "field": col} for col in column_defs_all_time],
+                                defaultColDef={"sortable": True, "filter": True, "resizable": False, "filter": False},
+                                className="ag-theme-alpine compact font",
+                                columnSize="responsiveSizeToFit",
+                                style={"height": 140}
+                              )
+                            ]),
+                          ])
                       ]
                   )
               ]

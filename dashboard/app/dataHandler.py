@@ -4,6 +4,16 @@ import plotly.express as px
 import numpy as np
 import datetime as dt
 
+def format_duration(minutes):
+    total_seconds = int(minutes * 60)
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    
+    if hours > 0:
+        return f"{hours:02}:{minutes:02}:{seconds:02}"
+    else:
+        return f"{minutes:02}:{seconds:02}"
+
 def get_bin(value):
     if value >= 7:
         return "> 7:00"
@@ -52,7 +62,7 @@ class DataHandler:
         all_files = glob.glob(data_path+ f"per_runner_data_{self.year}" + "/*.csv")  # Get all CSV files
         self.df_per_athlete = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
         self.df_running= pd.read_csv(data_path+f"../running/run_ww_{self.year}_d.csv", index_col="Unnamed: 0")
-
+        self.df_wr = pd.read_csv("../data/wr/running_wr.csv")
 
 
     def get_fig_pace_distribution(self, athlete_id, distance):
@@ -135,7 +145,29 @@ class DataHandler:
         print("test")
 
     def get_df_all_time(self, distance, gender):
-        print("test")
+
+        path = f"{self.data_path}/all_time_performances_{self.year}/"
+        all_files = glob.glob(path + "/*.csv")  # Get all CSV files
+        df = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
+        df.drop(columns='_c0', inplace=True)
+
+
+        
+        df_wr_filtered = self.df_wr.loc[(self.df_wr['distance'] == distance) & (self.df_wr['gender'] == gender)].copy()
+        df_wr_filtered.rename(columns={"world_record": "pace_str", "athlete_age": "age_group"}, inplace=True)
+        df_wr_filtered = df_wr_filtered[['athlete', 'age_group', 'country', 'distance', 'duration']]
+        df_wr_filtered['pace'] = df_wr_filtered['duration'] / df_wr_filtered['distance']
+        df_wr_filtered['pace_str'] = (df_wr_filtered['pace'] - df_wr_filtered['pace'].astype(int))*60
+        df_wr_filtered['pace_str'] = df_wr_filtered['pace'].astype(int).astype(str)+":"+df_wr_filtered['pace_str'].astype(int).astype(str).str.zfill(2)
+        df_wr_filtered['duration'] = df_wr_filtered['duration'].apply(format_duration)
+        df_filtered = df.loc[(df['best distance'] == distance) & (df['gender'] == gender)]
+        df_filtered['pace_str'] = df_filtered['pace_min'].astype(str) +':'+ df_filtered['pace_sec'].astype(int).astype(str).str.zfill(2)
+        df_filtered = df_filtered[['athlete', 'distance', 'duration', 'age_group', 'country', 'pace', 'pace_str']]
+        df_filtered['duration'] = df_filtered['duration'].apply(format_duration)
+        df_perf = pd.concat([df_filtered, df_wr_filtered]).sort_values(by=['pace'])
+        df_perf['age_group'] = df_perf['age_group'].astype(str)
+        print(df_perf)
+        return df_perf
 
     def get_df_country_representation_wr(self):
         print("test")

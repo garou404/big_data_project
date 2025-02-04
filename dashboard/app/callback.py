@@ -42,3 +42,21 @@ def plot_graph_weekly_distance(athlete_id, distance):
         figure = data_handler.get_fig_weekly_distance(athlete_id, start_date, end_date)
         return figure
     return no_update
+
+
+@callback(
+    Output('all_time_perf_male_grid', 'rowData'),
+    Input('distance_all_time_dropdown', 'value')
+)
+def display_grid_all_time_male(distance):
+    df_perf = data_handler.get_df_all_time(distance, "M")
+    return df_perf[['athlete', 'duration', 'age_group', 'country', 'pace_str']].to_dict('records')
+
+
+@callback(
+    Output('all_time_perf_female_grid', 'rowData'),
+    Input('distance_all_time_dropdown', 'value')
+)
+def display_grid_all_time_female(distance):
+    df_perf = data_handler.get_df_all_time(distance, "F")
+    return df_perf[['athlete', 'duration', 'age_group', 'country', 'pace_str']].to_dict('records')
