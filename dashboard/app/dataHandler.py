@@ -185,14 +185,14 @@ class DataHandler:
         if start_date:
             df_weekly = df_weekly.loc[(df_weekly['datetime'] > dt.datetime.strptime(start_date, "%Y-%m-%d")) & (df_weekly['datetime'] < dt.datetime.strptime(end_date, "%Y-%m-%d"))]
         try:
-            fig = px.bar(df_weekly, x='datetime', y='distance', title='', 
+            fig = px.bar(df_weekly, x='datetime', y='distance', title='Weekly Running Distance: Kilometers Tracked', 
                 labels={'datetime': '', 'distance': 'Distance (km)'},
                 text_auto=True, color='distance', color_continuous_scale="hot"
             ) #darkmint hot tealgrn ylgnbu spectral blackbody
 
-            fig.update_layout(xaxis_title='', yaxis_title='Distance (km)',
+            fig.update_layout(xaxis_title='', yaxis_title='Distance (km)', 
                 xaxis=dict(tickformat='%b'),
-                margin=dict(l=25, r=20, t=10, b=0),
+                margin=dict(l=25, r=20, t=30, b=0),
                 paper_bgcolor = 'rgba(0,0,0,0)',
                 # plot_bgcolor = 'rgba(0,0,0,0)'
             )
@@ -284,7 +284,6 @@ class DataHandler:
         if not self.df_proportion_athlete_per_pop.empty:
             df = self.df_proportion_athlete_per_pop.copy()
             df['flag_filename'] = df['country'].map(lambda x: f"/assets/flags/flags/4x3/{country_to_svg.get(x, 'xx')}")
-            print(df)
             return df
         else:
             return pd.DataFrame()
@@ -297,4 +296,8 @@ class DataHandler:
         print("test")
         # avg run nb/week/athlete - avg dist/run/athlete - avg dist/week/athlete
 
-    
+    def get_df_athletes_per_age_group(self):
+        if not self.df_proportion_per_age_category.empty:
+            return self.df_proportion_per_age_category.sort_values(by=['count'], ascending=False)
+        else:
+            return pd.DataFrame()

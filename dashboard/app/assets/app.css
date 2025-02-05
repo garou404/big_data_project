@@ -7,5 +7,21 @@
 }
 
 .custom-font-size{
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.Select-input{
+    height: 25px;
+}
+
+.Select-control{
+    height: 27px;
+}
+
+.Select-placeholder{
+    line-height: 25px;
+}
+
+.Select-value{
+    line-height: 28px !important;
 }

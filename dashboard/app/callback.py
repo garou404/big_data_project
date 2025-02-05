@@ -17,9 +17,10 @@ month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 def display_data_per_athlete(athlete_id):
     df_athlete = data_handler.get_data_per_athlete(athlete_id)
     longest_streak = df_athlete['longest_streak'].values
-    avg_dist_per_week = df_athlete['avg_dist_per_week'].values
-    total_distance = df_athlete['total_dist'].values
-    return longest_streak, avg_dist_per_week, total_distance, None
+    avg_dist_per_week = df_athlete['avg_dist_per_week'].values[0]
+    total_distance = df_athlete['total_dist'].values[0]
+    average_run_distance = df_athlete['avg_run_dist'].values[0]
+    return longest_streak, str(avg_dist_per_week)+" km", str(total_distance)+" km", str(average_run_distance)+" km"
 
 @callback(
     Output("pace_distribution", "figure"),
@@ -108,7 +109,7 @@ def display_grid_athlete_prop_pop_country(pathname):
     Input('url', 'pathname')
 )
 def display_grid_athlete_prop_per_age_group(pathname):
-    df = data_handler.get_athlete_per_country()
+    df = data_handler.get_df_athletes_per_age_group()
     return df.to_dict("records")
 
 
