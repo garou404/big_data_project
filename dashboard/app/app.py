@@ -30,7 +30,7 @@ dash_app.layout = html.Div([
               className='col-4 h-100 p-2',
               children=[
                   html.Div(
-                      className="bg-light", 
+                      className="bg-secondary-subtle", #bg-light", 
                       children=[
                           html.Div(
                               className="text-center pb-3",
@@ -125,7 +125,7 @@ dash_app.layout = html.Div([
               className='col-4 h-100 p-2',
               children=[
                 html.Div(
-                      className="bg-light", 
+                      className="bg-secondary-subtle", #bg-light", 
                       children=[
                           html.Div(
                               className="text-center pb-3",
@@ -223,7 +223,7 @@ dash_app.layout = html.Div([
               className='col-4 h-100 p-2',
               children=[
                 html.Div(
-                      className="bg-light", 
+                      className="bg-secondary-subtle", #bg-light", 
                       children=[
                           html.Div(
                               className="text-center pb-3",

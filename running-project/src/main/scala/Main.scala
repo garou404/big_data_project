@@ -4,7 +4,7 @@ import org.apache.spark.sql.functions.col
 
 object Main {
     def main(args: Array[String]) : Unit = {
-        val year = "2020"
+        val year = "2019"
         val spark = SparkSessionBuilder.spark
         val df = DataReader.readCSV(spark, "/home/charles-m/Projects/ASR/CSC5003/project/data/running/run_ww_"+year+"_d.csv")
         val df_pop = DataReader.readCSV(spark, "/home/charles-m/Projects/ASR/CSC5003/project/data/population/population_processed.csv")

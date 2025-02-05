@@ -80,11 +80,11 @@ object DataProcessor {
 
         // Identify gaps: If previous day's distance > 0, continue the streak, else reset
         val df_streak = df_runner
-            .withColumn("prev_distance", lag("distance", 1).over(windowSpec)) // Get previous day’s distance
-            .withColumn("streak_reset", when(col("prev_distance").isNull || col("prev_distance") === 0, 1).otherwise(0)) // Mark start of streaks
-            .withColumn("streak_id", sum("streak_reset").over(windowSpec)) // Create streak groups
-            .withColumn("running_streak", count("*").over(Window.partitionBy("athlete", "streak_id"))) // Count streak length
-            .drop("prev_distance", "streak_reset", "streak_id") // Clean up columns
+            .withColumn("prev_distance", lag("distance", 1).over(windowSpec))
+            .withColumn("streak_reset", when(col("prev_distance").isNull || col("prev_distance") === 0, 1).otherwise(0)) 
+            .withColumn("streak_id", sum("streak_reset").over(windowSpec)) 
+            .withColumn("running_streak", count("*").over(Window.partitionBy("athlete", "streak_id"))) 
+            .drop("prev_distance", "streak_reset", "streak_id") 
 
         // Get max streak per athlete
         val df_max_streak = df_streak
@@ -136,15 +136,15 @@ object DataProcessor {
 
 
         df_runner
-        .filter(col("distance") =!= 0) // Filter out rows where distance is 0
-        .groupBy("country") // Group by country
+        .filter(col("distance") =!= 0)
+        .groupBy("country")
         .agg(
             count("*").as("nb_of_run"),
             round(sum("distance") / lit(nb_of_weeks), 2).as("avg_dist_per_week"),
             round(avg("distance"), 2).as("avg_run_dist_per_run_per_athlete"),
             countDistinct("athlete").as("distinct_athletes")
         )
-        .withColumn("avg_nb_of_run_per_athlete_per_week", round(col("nb_of_run") / lit(nb_of_weeks) / col("distinct_athletes"), 0)) // Calculate average runs per week
+        .withColumn("avg_nb_of_run_per_athlete_per_week", round(col("nb_of_run") / lit(nb_of_weeks) / col("distinct_athletes"), 0))
         .withColumn("avg_dist_per_athlete_per_week", round(col("avg_dist_per_week") / col("distinct_athletes"), 2))
     }
 }
